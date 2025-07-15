@@ -8,7 +8,7 @@ app.use(express.static('public'));
 app.use(express.json());
 
 // *** Replace these with your actual secrets here ***
-const PASSWORD = 'YourSecretPassword123';
+const PASSWORD = 'ax30g(b77d#B';
 const RECAPTCHA_SECRET = '6Lf_IIMrAAAAAALiolF4F8Tv_mCokoXStRB6IDNS';
 const WEBHOOK_URL = 'https://discord.com/api/webhooks/1394507578314067978/SFuDXBALvqEk7qRz43XIGTvIZB1mb9FBrGoolv0q2Se3fddvIKf5U73Aqt-dandq2x3Z';
 
