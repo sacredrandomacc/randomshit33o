@@ -34,13 +34,19 @@
       Submit an extortion or threat report securely and anonymously. Our team will review it and take action within our limits. <strong>This system is not law enforcement.</strong>
     </p>
 
-    <form id="reportForm" class="space-y-4">
+    <form id="reportForm" class="space-y-4" enctype="multipart/form-data">
       <input type="password" name="accessKey" placeholder="Access Password" required class="w-full p-2 rounded bg-gray-800 text-white" />
       <input type="text" name="reporter" placeholder="Your Discord Username (e.g., SkbidiToilet#1234)" required class="w-full p-2 rounded bg-gray-800 text-white" />
       <input type="text" name="victim" placeholder="Victim's Username (if different)" class="w-full p-2 rounded bg-gray-800 text-white" />
       <input type="text" name="suspect" placeholder="Suspect Username or ID (if known)" class="w-full p-2 rounded bg-gray-800 text-white" />
       <textarea name="description" placeholder="What happened? Please describe in detail." required class="w-full p-2 rounded bg-gray-800 text-white h-28"></textarea>
       <input type="url" name="evidence" placeholder="Link to evidence (e.g., Imgur, Discord CDN)" required class="w-full p-2 rounded bg-gray-800 text-white" />
+
+      <!-- File upload input -->
+      <label class="block text-gray-400">
+        Upload evidence file (optional):
+        <input type="file" name="file" accept="image/*,video/*" class="mt-1 w-full text-gray-200 bg-gray-800 p-2 rounded" />
+      </label>
 
       <label class="text-sm text-gray-400">
         <input type="checkbox" required id="consentCheckbox" />
@@ -147,7 +153,8 @@
       form.querySelector('button[type="submit"]').textContent = t.submit;
       document.querySelector('a[href="privacy.html"]').textContent = t.privacyPolicy;
 
-      statusMsg.textContent = t.submit + " " + "✅ Report submitted. Thank you for helping the community.";
+      // Adjust status message template if needed
+      statusMsg.textContent = "✅ Report submitted. Thank you for helping the community.";
     }
 
     langSelector.addEventListener('change', e => {
@@ -156,6 +163,33 @@
 
     // Initialize with default language
     updateLanguage('en');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      if (!grecaptcha.getResponse()) {
+        alert('Please complete the CAPTCHA.');
+        return;
+      }
+
+      const formData = new FormData(form);
+      formData.append('recaptcha', grecaptcha.getResponse());
+
+      try {
+        const res = await fetch('/submit', {
+          method: 'POST',
+          body: formData
+        });
+
+        if (!res.ok) throw new Error(await res.text());
+
+        form.reset();
+        statusMsg.classList.remove('hidden');
+        grecaptcha.reset();
+      } catch (err) {
+        alert('❌ Failed to submit report: ' + err.message);
+      }
+    });
   </script>
 </body>
 </html>
