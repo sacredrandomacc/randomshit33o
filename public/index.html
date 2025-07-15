@@ -1,11 +1,10 @@
-<!-- AE Support Report Site - Render Ready -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>AE SafeReport</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   <style>
     body {
@@ -18,85 +17,145 @@
 <body class="flex items-center justify-center min-h-screen">
   <div class="bg-gray-900 p-6 rounded-xl shadow-xl w-full max-w-xl">
     <h1 class="text-2xl font-bold mb-4 text-center text-red-500">🛡️ AE SafeReport</h1>
-    <p class="mb-6 text-sm text-gray-300 text-center">Submit an extortion or threat report securely and anonymously. Our team will review it and take action within our limits. <strong>This system is not law enforcement.</strong></p>
+
+    <!-- Language selector -->
+    <div class="mb-4 text-center">
+      <label for="lang" class="mr-2">🌐 Language:</label>
+      <select id="lang" class="rounded bg-gray-800 text-white p-1">
+        <option value="en" selected>English</option>
+        <option value="es">Español</option>
+        <option value="zh">中文 (Mandarin)</option>
+        <option value="hi">हिन्दी (Hindi)</option>
+        <option value="ar">العربية (Arabic)</option>
+      </select>
+    </div>
+
+    <p id="intro" class="mb-6 text-sm text-gray-300 text-center">
+      Submit an extortion or threat report securely and anonymously. Our team will review it and take action within our limits. <strong>This system is not law enforcement.</strong>
+    </p>
 
     <form id="reportForm" class="space-y-4">
-      <input type="password" name="accessKey" placeholder="Access Password" required class="w-full p-2 rounded bg-gray-800 text-white">
-      <input type="text" name="reporter" placeholder="Your Discord Username (e.g., SkbidiToilet#1234)" required class="w-full p-2 rounded bg-gray-800 text-white">
-      <input type="text" name="victim" placeholder="Victim's Username (if different)" class="w-full p-2 rounded bg-gray-800 text-white">
-      <input type="text" name="suspect" placeholder="Suspect Username or ID (if known)" class="w-full p-2 rounded bg-gray-800 text-white">
+      <input type="password" name="accessKey" placeholder="Access Password" required class="w-full p-2 rounded bg-gray-800 text-white" />
+      <input type="text" name="reporter" placeholder="Your Discord Username (e.g., SkbidiToilet#1234)" required class="w-full p-2 rounded bg-gray-800 text-white" />
+      <input type="text" name="victim" placeholder="Victim's Username (if different)" class="w-full p-2 rounded bg-gray-800 text-white" />
+      <input type="text" name="suspect" placeholder="Suspect Username or ID (if known)" class="w-full p-2 rounded bg-gray-800 text-white" />
       <textarea name="description" placeholder="What happened? Please describe in detail." required class="w-full p-2 rounded bg-gray-800 text-white h-28"></textarea>
-      <input type="url" name="evidence" placeholder="Link to evidence (e.g., Imgur, Discord CDN)" required class="w-full p-2 rounded bg-gray-800 text-white">
+      <input type="url" name="evidence" placeholder="Link to evidence (e.g., Imgur, Discord CDN)" required class="w-full p-2 rounded bg-gray-800 text-white" />
 
       <label class="text-sm text-gray-400">
-        <input type="checkbox" required>
-        I consent to this data being reviewed by AE volunteers and understand this is not an official legal authority.
+        <input type="checkbox" required id="consentCheckbox" />
+        <span id="consentText">I consent to this data being reviewed by AE volunteers and understand this is not an official legal authority.</span>
       </label>
 
-      <div class="g-recaptcha" data-sitekey="6LcCIoMrAAAAAB7qyBiqH2NiGfzYKFnj01AGd2sy"></div>
+      <div class="g-recaptcha" data-sitekey="YOUR_RECAPTCHA_SITE_KEY"></div>
 
-      <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 rounded">Submit Report</button>
+      <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 rounded">
+        Submit Report
+      </button>
     </form>
 
     <p id="statusMsg" class="mt-4 text-center text-green-400 hidden">✅ Report submitted. Thank you for helping the community.</p>
+
+    <p class="mt-4 text-center">
+      <a href="privacy.html" class="text-blue-400 underline">Privacy Policy</a>
+    </p>
   </div>
 
   <script>
+    const translations = {
+      en: {
+        intro: "Submit an extortion or threat report securely and anonymously. Our team will review it and take action within our limits. This system is not law enforcement.",
+        accessKey: "Access Password",
+        reporter: "Your Discord Username (e.g., SkbidiToilet#1234)",
+        victim: "Victim's Username (if different)",
+        suspect: "Suspect Username or ID (if known)",
+        description: "What happened? Please describe in detail.",
+        evidence: "Link to evidence (e.g., Imgur, Discord CDN)",
+        consent: "I consent to this data being reviewed by AE volunteers and understand this is not an official legal authority.",
+        submit: "Submit Report",
+        privacyPolicy: "Privacy Policy"
+      },
+      es: {
+        intro: "Envíe un informe de extorsión o amenaza de forma segura y anónima. Nuestro equipo lo revisará y tomará medidas dentro de nuestros límites. Este sistema no es una autoridad legal.",
+        accessKey: "Contraseña de acceso",
+        reporter: "Su nombre de usuario de Discord (ejemplo: SkbidiToilet#1234)",
+        victim: "Nombre de usuario de la víctima (si es diferente)",
+        suspect: "Nombre de usuario o ID del sospechoso (si se conoce)",
+        description: "¿Qué pasó? Por favor describa en detalle.",
+        evidence: "Enlace a la evidencia (por ejemplo, Imgur, Discord CDN)",
+        consent: "Consiento que estos datos sean revisados por voluntarios de AE y entiendo que esto no es una autoridad legal oficial.",
+        submit: "Enviar informe",
+        privacyPolicy: "Política de privacidad"
+      },
+      zh: {
+        intro: "安全且匿名地提交勒索或威胁报告。我们的团队将在权限范围内审核并采取行动。此系统不是执法机关。",
+        accessKey: "访问密码",
+        reporter: "您的Discord用户名（例如SkbidiToilet#1234）",
+        victim: "受害者用户名（如果不同）",
+        suspect: "嫌疑人用户名或ID（如果已知）",
+        description: "发生了什么？请详细描述。",
+        evidence: "证据链接（例如Imgur，Discord CDN）",
+        consent: "我同意AE志愿者审查这些数据，并理解这不是官方法律机构。",
+        submit: "提交报告",
+        privacyPolicy: "隐私政策"
+      },
+      hi: {
+        intro: "सुरक्षित और गुमनाम रूप से ब्लैकमेल या धमकी की रिपोर्ट जमा करें। हमारी टीम इसे समीक्षा करेगी और हमारे दायरे में कार्रवाई करेगी। यह सिस्टम कानून प्रवर्तन नहीं है।",
+        accessKey: "पहुंच पासवर्ड",
+        reporter: "आपका डिस्कॉर्ड यूजरनेम (जैसे SkbidiToilet#1234)",
+        victim: "पीड़ित का यूजरनेम (यदि अलग हो)",
+        suspect: "संदिग्ध का यूजरनेम या आईडी (यदि ज्ञात हो)",
+        description: "क्या हुआ? कृपया विस्तार से बताएं।",
+        evidence: "साक्ष्य का लिंक (जैसे Imgur, Discord CDN)",
+        consent: "मैं सहमत हूं कि AE स्वयंसेवक इस डेटा की समीक्षा करेंगे और समझता हूं कि यह कोई आधिकारिक कानूनी प्राधिकरण नहीं है।",
+        submit: "रिपोर्ट सबमिट करें",
+        privacyPolicy: "गोपनीयता नीति"
+      },
+      ar: {
+        intro: "قم بتقديم تقرير ابتزاز أو تهديد بشكل آمن ومجهول. سيقوم فريقنا بمراجعته واتخاذ الإجراءات ضمن حدودنا. هذا النظام ليس جهة تنفيذ القانون.",
+        accessKey: "كلمة مرور الدخول",
+        reporter: "اسم المستخدم الخاص بك في ديسكورد (مثال: SkbidiToilet#1234)",
+        victim: "اسم مستخدم الضحية (إذا كان مختلفًا)",
+        suspect: "اسم مستخدم أو معرف المشتبه به (إذا كان معروفًا)",
+        description: "ماذا حدث؟ يرجى الوصف بالتفصيل.",
+        evidence: "رابط الدليل (مثل Imgur، Discord CDN)",
+        consent: "أوافق على مراجعة هذه البيانات من قبل متطوعي AE وأفهم أن هذا ليس سلطة قانونية رسمية.",
+        submit: "إرسال التقرير",
+        privacyPolicy: "سياسة الخصوصية"
+      }
+    };
+
+    const langSelector = document.getElementById('lang');
+    const intro = document.getElementById('intro');
     const form = document.getElementById('reportForm');
+    const consentCheckbox = document.getElementById('consentCheckbox');
+    const consentText = document.getElementById('consentText');
     const statusMsg = document.getElementById('statusMsg');
-    const ACCESS_PASSWORD = 'ax30g(b77d#B'; // Set this in your backend too
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
+    function updateLanguage(lang) {
+      const t = translations[lang];
+      intro.textContent = t.intro;
 
-      const formData = new FormData(form);
-      const accessKey = formData.get('accessKey');
-      const recaptcha = grecaptcha.getResponse();
+      form.accessKey.placeholder = t.accessKey;
+      form.reporter.placeholder = t.reporter;
+      form.victim.placeholder = t.victim;
+      form.suspect.placeholder = t.suspect;
+      form.description.placeholder = t.description;
+      form.evidence.placeholder = t.evidence;
 
-      if (!recaptcha) {
-        alert('Please complete the CAPTCHA.');
-        return;
-      }
+      consentText.textContent = t.consent;
+      form.querySelector('button[type="submit"]').textContent = t.submit;
+      document.querySelector('a[href="privacy.html"]').textContent = t.privacyPolicy;
 
-      if (accessKey !== ACCESS_PASSWORD) {
-        alert('Incorrect access password.');
-        return;
-      }
+      statusMsg.textContent = t.submit + " " + "✅ Report submitted. Thank you for helping the community.";
+    }
 
-      const payload = {
-        username: 'AE Report Bot',
-        embeds: [{
-          title: '🛡️ New Extortion Report',
-          color: 14423100,
-          fields: [
-            { name: 'Reporter', value: formData.get('reporter') || 'N/A' },
-            { name: 'Victim', value: formData.get('victim') || 'Same as reporter' },
-            { name: 'Suspect', value: formData.get('suspect') || 'Unknown' },
-            { name: 'Description', value: formData.get('description') || 'No description provided' },
-            { name: 'Evidence', value: formData.get('evidence') || 'None' }
-          ]
-        }],
-        log: {
-          submittedAt: new Date().toISOString(),
-          ip: 'client',
-          referrer: document.referrer
-        }
-      };
-
-      try {
-        await fetch('/submit', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-
-        form.reset();
-        statusMsg.classList.remove('hidden');
-        grecaptcha.reset();
-      } catch (err) {
-        alert('❌ Failed to submit report. Please try again later.');
-      }
+    langSelector.addEventListener('change', e => {
+      updateLanguage(e.target.value);
     });
+
+    // Initialize with default language
+    updateLanguage('en');
   </script>
 </body>
 </html>
