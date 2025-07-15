@@ -3,9 +3,9 @@ const app = express();
 const fetch = require('node-fetch');
 
 app.use(express.json());
-app.use(express.static('public')); // your HTML file is in /public
+app.use(express.static('public'));
 
-const WEBHOOK_URL = 'YOUR_DISCORD_WEBHOOK_URL'; // Replace this!
+const WEBHOOK_URL = 'https://discord.com/api/webhooks/1394507578314067978/SFuDXBALvqEk7qRz43XIGTvIZB1mb9FBrGoolv0q2Se3fddvIKf5U73Aqt-dandq2x3Z';
 
 app.post('/submit', async (req, res) => {
   try {
